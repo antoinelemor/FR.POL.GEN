@@ -1,177 +1,88 @@
 import pandas as pd
 import os
-import re
-import ollama
-from unidecode import unidecode
 from ollama import generate
+from unidecode import unidecode
+import re
 
-# Configure the settings for the LLM
+# Configuration du modèle Mixtral 7x8b
 model = 'mixtral:8x7b-instruct-v0.1-q5_K_M'
 options = {
     "temperature": 0,
     "top_p": 0,
     "top_k": 1,
-    "num_predict": 35,
-    "num_thread" : 12,
-    "num_ctx":3500
+    "num_predict": 10,
+    "num_thread":12
 }
 
-# Définition des chemins de fichiers
+# Chemins de fichiers
 script_dir = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(script_dir, '..', '..', 'Database', 'preprocessed_data', 'QC.instructions_conf_texts.csv')
-output_path = os.path.join(script_dir, '..', '..', 'Database', 'annotated_data', 'QC.processed_conf_texts_with_new_responses.csv')
+data_path = os.path.join(script_dir, '..', '..', 'Database', 'instructions_speech_texts.csv')
+output_path = os.path.join(script_dir, '..', '..', 'Database', 'annotated_speech_texts.csv')
 
-# Chargement du fichier CSV
+# Charger le DataFrame
 df = pd.read_csv(data_path)
 
-# Création d'un nouveau DataFrame
-new_df = df[['doc_ID', 'date', 'sentence_id', 'context']].copy()
-columns_to_add = ['detect_evidence_response', 'type_of_evidence_response', 'source_of_evidence_response',
-                 'associated_emotion_response', 'detect_source_response',
-                 'journalist_question_response', 'country_source_response']
-for col in columns_to_add:
-    new_df[col] = ''
+# Définition des catégories principales et spécifiques
+main_categories = ['detect_immigration', 'detect_démocratie', 'detect_progrès', 'detect_égalité', 'detect_nation', 'detect_autorité', 'detect_tradition']
+specific_categories = {
+    'detect_immigration': ['immigration_1', 'immigration_2', 'immigration_3', 'immigration_4'],
+    'detect_démocratie': ['démocratie_1', 'démocratie_2', 'démocratie_3', 'démocratie_4'],
+    'detect_progrès': ['progrès_1', 'progrès_2', 'progrès_3', 'progrès_4'],
+    'detect_égalité': ['égalité_1', 'égalité_2', 'égalité_3', 'égalité_4'],
+    'detect_nation': ['nation_1', 'nation_2', 'nation_3', 'nation_4'],
+    'detect_autorité': ['autorité_1', 'autorité_2', 'autorité_3', 'autorité_4', 'autorité_5'],
+    'detect_tradition': ['tradition_1', 'tradition_2', 'tradition_3', 'tradition_4'],
+}
 
-# Traitement de chaque ligne
-for index, row in new_df.iterrows():
-    context, date, sentence_id = row['context'], row['date'], row['sentence_id']
-    base_prompt = "Tu es un annotateur de texte en français. Ta réponse doit être exclusivement 'oui' ou 'non'"
+# Ajout de colonnes pour chaque catégorie et sous-catégorie
+columns = ['doc_ID', 'sentence_id', 'intervenant', 'date'] + main_categories + list(sum(specific_categories.values(), [])) + ['emotion', 'theme']
+annotated_df = pd.DataFrame(columns=columns)
 
-    for instruction in ['detect_COVID', 'detect_evidence', 'detect_source', 'journalist_question']:
-        prompt = f"{base_prompt}\n{df.at[index, instruction]}\n{context}"
-        response = generate(model, prompt, options=options)['response'].lower()
-        response = 'oui' if 'oui' in response.lower() else 'non'
-        new_df.at[index, f'{instruction}_response'] = response
-        print(f"Date: {date}, Sentence ID: {sentence_id}, {instruction}: {response}")
+# Annotation des textes
+for index, row in df.iterrows():
+    new_row = {col: None for col in columns}
+    new_row.update({key: row[key] for key in ['doc_ID', 'sentence_id', 'intervenant', 'date']})
 
-    # Instructions supplémentaires si 'detect_COVID_response' est 'oui'
-    if new_df.at[index, 'detect_COVID_response'] == 'oui':
-        for additional_instruction in ['frame', 'measures','associated_emotion']:
-            prompt = f"Tu es un annotateur de texte en français.\n{df.at[index, additional_instruction]}\n{context}"
-            full_response = generate(model, prompt, options=options)['response'].strip().lower()
-            full_response = unidecode(full_response)
+    for main_cat in main_categories + ['emotion', 'theme']:
+        intro = "Tu es un annotateur de texte qui doit répondre exclusivement par \"oui\" ou par \"non\".\n\n" if main_cat not in ['emotion', 'theme'] else "Tu es un annotateur de texte en français. Commence ta réponse exclusivement par le nom de l'option que tu choisis.\n\n"
+        instruction = row[main_cat]
+        prompt = f"{intro}{instruction} :\n{row['context']}"
 
-            # Traitement personnalisé pour chaque instruction supplémentaire
-            if additional_instruction == 'frame':
-                patterns = {
-                    'dangereux': r'\bdangere',
-                    'modéré': r'\bmoder',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            elif additional_instruction == 'measures':
-                patterns = {
-                    'suppression': r'\bsuppressi|\bsupressi',
-                    'mitigation': r'\bmitigat',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            elif additional_instruction == 'associated_emotion':
-                patterns = {
-                    'négatif': r'\bneg',
-                    'positif': r'\bposi',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            new_df.at[index, f'{additional_instruction}_response'] = response
-            print(f"Date: {date}, Sentence ID: {sentence_id}, {additional_instruction}: {response}")
+        response1 = generate(model, prompt, options=options)['response'].strip().lower()
+        response = unidecode(response1)
 
-    # Instructions supplémentaires si 'detect_evidence' ou 'detect_source' est 'oui'
-    if new_df.at[index, 'detect_evidence_response'] == 'oui' or new_df.at[index, 'detect_source_response'] == 'oui':
-        for additional_instruction in ['source_of_evidence', 'associated_emotion', 'country_source', 'frame', 'measures']:
-            prompt = f"Tu es un annotateur de texte en français.\n{df.at[index, additional_instruction]}\n{context}"
-            full_response = generate(model, prompt, options=options)['response'].strip().lower()
-            full_response = unidecode(full_response)
+        if main_cat == 'emotion':
+            patterns = {'positif': r'\bpositif', 'négatif': r'\bnegatif', 'neutre': r'\bneutre'}
+            first_occurrence = None
+            for category, pattern in patterns.items():
+                match = re.search(pattern, response)
+                if match:
+                    if first_occurrence is None or match.start() < first_occurrence[1]:
+                        first_occurrence = (category, match.start())
+            response = first_occurrence[0] if first_occurrence else response
+        elif main_cat == 'theme':
+            response_words = response.split()
+            response = ' '.join(response_words[:2]) if response_words else 'NA'
+        else:
+            response = 'oui' if 'oui' in response or 'yes' in response else 'non'
 
-            # Traitement personnalisé pour chaque instruction supplémentaire
-            if additional_instruction == 'source_of_evidence':
-                response = full_response
-            elif additional_instruction == 'associated_emotion':
-                patterns = {
-                    'négatif': r'\bneg',
-                    'positif': r'\bposi',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            elif additional_instruction == 'country_source':
-                response = 'oui' if 'oui' in full_response else 'non' if 'non' in full_response else 'NA' if 'na' in full_response else full_response
-            elif additional_instruction == 'frame':
-                patterns = {
-                    'dangereux': r'\bdangere',
-                    'modéré': r'\bmoder',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            elif additional_instruction == 'measures':
-                patterns = {
-                    'suppression': r'\bsuppressi|\bsupressi',
-                    'mitigation': r'\bmitigat',
-                    'neutre': r'\bneutr'
-                } 
-                first_occurrence = None
-                for category, pattern in patterns.items():
-                    match = re.search(pattern, full_response)
-                    if match:
-                        if first_occurrence is None or match.start() < first_occurrence[1]:
-                            first_occurrence = (category, match.start())
-                response = first_occurrence[0] if first_occurrence else full_response
-            new_df.at[index, f'{additional_instruction}_response'] = response
-            print(f"Date: {date}, Sentence ID: {sentence_id}, {additional_instruction}: {response}")
+        new_row[main_cat] = response1
+        print(f"Doc ID: {row['doc_ID']}, Sentence ID: {row['sentence_id']}, Intervenant: {row['intervenant']}, Date: {row['date']}, Category: {main_cat}, Response: {response1}")
 
-    # Instructions supplémentaires si 'detect_evidence' est 'oui'
-    if new_df.at[index, 'detect_evidence_response'] == 'oui':
-        # Traitement pour 'type_of_evidence'
-        prompt = f"Tu es un annotateur de texte en français.\n{df.at[index, 'type_of_evidence']}\n{context}"
-        full_response = generate(model, prompt, options=options)['response'].strip().lower()
-        full_response = unidecode(full_response)
+        if main_cat in specific_categories and response == 'oui':
+            for spec_cat in specific_categories[main_cat]:
+                instructions = row[spec_cat]
+                prompt_spec = f"{intro}{instructions} :\n{row['context']}"
+                spec_response1 = generate(model, prompt_spec, options=options)['response'].strip().lower()
+                spec_response = unidecode(spec_response1)
+                spec_response = 'oui' if 'oui' in spec_response or 'yes' in spec_response else 'non'
+                new_row[spec_cat] = spec_response1
 
-        patterns = {
-            'sciences naturelles': r'\bnatur',
-            'sciences sociales': r'\bsocial',
-            'NA': r'na'
-        }
-        first_occurrence = None
-        for category, pattern in patterns.items():
-            match = re.search(pattern, full_response)
-            if match:
-                if first_occurrence is None or match.start() < first_occurrence[1]:
-                    first_occurrence = (category, match.start())
+                print(f"Doc ID: {row['doc_ID']}, Sentence ID: {row['sentence_id']}, Intervenant: {row['intervenant']}, Date: {row['date']}, Sub-Category: {spec_cat}, Response: {spec_response1}")
 
-        response = first_occurrence[0] if first_occurrence else full_response
-        new_df.at[index, 'type_of_evidence_response'] = response
-        print(f"Date: {date}, Sentence ID: {sentence_id}, type_of_evidence: {response}")
+    # Utilisation de pd.concat au lieu de DataFrame.append pour éviter l'avertissement
+    annotated_df = pd.concat([annotated_df, pd.DataFrame([new_row])], ignore_index=True)
 
-
-# Enregistrement du nouveau DataFrame
-new_df.to_csv(output_path, index=False)
-print("Le nouveau fichier CSV avec les réponses individuelles a été enregistré.")
+# Enregistrement du DataFrame annoté dans un fichier CSV
+annotated_df.to_csv(output_path, index=False)
+print("L'annotation est terminée et le fichier CSV est enregistré.")
