@@ -53,4 +53,4 @@ Mixtral 7x8b doit être installé pour utiliser ces scripts :
 | Détection de droite extrême des thématiques | 127 | 1         | 0.73   | 0.84 |
 | Détection du ton (positif, négatif, neutre) | 400 | 0.94      | 0.94   | 0.93 |
 | Ensemble                     | 994 | 1         | 0.89   | 0.94 |
-| Annotation sur un échantillon représentatif de 400 phrases (IC 95%) |     |           |        |      |
+| Annotation sur un échantillon représentatif de 400 phrases (IC 95%)                                   |
