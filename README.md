@@ -128,7 +128,7 @@ Ce readme est organisé et décrit par dossier, et explique brièvement les fonc
 #### `Processed_speech_texts.csv`
 - **Description :** Fichier CSV résultant du script de prétraitement des discours, il contient les textes segmentés en phrases avec leur contexte de trois phrases.
 
-### `instructions_speech_texts.csv`
+### `instructions_speech_texts.csv` — ABSENT — Fichier volumineux (>100Mo)
 - **Description :** Ce fichier CSV contient les textes des discours politiques accompagnés d'instructions d'annotation détaillées pour chaque phrase. Ces instructions sont destinées à guider les annotateurs dans le processus d'annotation manuelle.
 
 #### `annotated_speech_texts.csv`
@@ -296,7 +296,7 @@ This README is organized and described by folder, and briefly explains the featu
 #### `Processed_speech_texts.csv`
 - **Description:** Resulting CSV file from the preprocessing script of the speeches, it contains the texts segmented into sentences with their three-sentence context.
 
-### `instructions_speech_texts.csv`
+### `instructions_speech_texts.csv` — ABSENT — Large file (>100MB)
 - **Description:** This CSV file contains the political speech texts accompanied by detailed annotation instructions for each sentence. These instructions are intended to guide annotators in the manual annotation process.
 
 #### `annotated_speech_texts.csv`
