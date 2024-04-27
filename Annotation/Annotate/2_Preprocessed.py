@@ -10,7 +10,7 @@ script_dir = os.path.dirname(__file__)
 csv_path = os.path.join(script_dir, '..', '..', 'Database', 'Speech_texts.csv')
 
 # Chargement du modèle français de spaCy
-nlp = spacy.load('fr_core_news_sm')
+nlp = spacy.load('fr_dep_news_trf')
 
 # Fonction pour tokéniser et créer le contexte des phrases
 def tokenize_and_context(text):
@@ -18,8 +18,8 @@ def tokenize_and_context(text):
     sentences = [sent.text.strip() for sent in doc.sents]
     contexts = []
     for i, sentence in enumerate(sentences):
-        start = max(i-3, 0)
-        end = min(i+4, len(sentences))
+        start = max(i-1, 0)
+        end = min(i+2, len(sentences))
         context = ' '.join(sentences[start:end])
         contexts.append((i, context))
     return contexts
@@ -28,7 +28,7 @@ def tokenize_and_context(text):
 df = pd.read_csv(csv_path)
 
 # Sélection aléatoire de 15 discours
-selected_speeches = shuffle(df).head(15)
+selected_speeches = df
 
 # Application des fonctions et création du nouveau dataframe
 new_data = []
