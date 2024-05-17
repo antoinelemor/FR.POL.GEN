@@ -171,7 +171,7 @@ Ce readme est organisé et décrit par dossier, et explique brièvement les fonc
 
 ## Summary
 
-This repository is dedicated to the textual data analysis of all general policy speeches of the Fifth Republic, using natural language processing techniques and the LLM Mixtral 7x8b. The textual data were extracted from the web and then cleaned from the site: [public life](https://www.vie-publique.fr/discours-dans-lactualite/269993-les-declarations-de-politique-generale).
+This repository is dedicated to the textual data analysis of all general policy speeches of the Fifth Republic, using natural language processing techniques and the LLM Mixtral 7x8b. The textual data were extracted from the web and then cleaned from the site: [vie publique](https://www.vie-publique.fr/discours-dans-lactualite/269993-les-declarations-de-politique-generale).
 
 The annotation scripts in this repository can be freely used on the textual database of the speeches, and the instructions modified to produce new analyses. We ask that any new studies using this repository appropriately cite it.
 
