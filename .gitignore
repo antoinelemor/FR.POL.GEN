@@ -2,3 +2,5 @@ Scrap/geckodriver.log
 .DS_Store
 .gitattributes
 Texts/.DS_Store
+Results/Archives/Database.R
+Results/Archives/Results.R
