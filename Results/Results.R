@@ -91,7 +91,7 @@ ggplot(far_right_score_time_series, aes(x = date, y = far_right_score, color = d
   theme_minimal() +
   labs(title = "Évolution des Catégories d'Appartenance Idéologique à l'Extrême Droite (CAIED)",
        x = "Date",
-       y = "Score Idéologique d'Extrême Droite (SIED) par CAIED",
+       y = "Prévalence des sous-dimensions d'extrême droite par CAIED",
        color = "Thématique") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "right") +
   guides(color = guide_legend(override.aes = list(alpha = 1)))
