@@ -143,12 +143,12 @@ Ce readme est organisé et décrit par dossier, et explique brièvement les fonc
 - **Description :** Ce fichier contient des données électorales et parlementaires pour des analyses de régressions postérieures. 
 
 ## 📁 Results
-### Ce dossier contient des scripts produisant des résultats d'analyse à partir de l'annotation réalisée. Ces analyses fournissent une compréhension approfondie des tendances thématiques et émotionnelles dans les discours de politique générake, notamment leur 'extrême droitisation'
+### Ce dossier contient des scripts produisant des résultats d'analyse à partir de l'annotation réalisée.
 
 ### Database.R : Création de la base de données avec indice du Score Idéologique d'Extrême Droite
 
 ### Results.R : Visualisation et analyse des résultats des annotations
-- **Fonctionnalité :** Ce script R génère des visualisations et des analyses détaillées des données annotées, y compris des distributions thématiques, des proportions et des évolutions temporelles des thématiques dans les discours politiques.
+- **Fonctionnalité :** Ce script R génère des visualisations et des analyses détaillées des données annotées, y compris des distributions thématiques, des proportions et des évolutions temporelles des thématiques.
 
 # FR.POL.GEN
 ## A repository (for textual analysis) of all 'general policy speeches' of the Fifth French Republic
@@ -295,7 +295,7 @@ This README is organized and described by folder, and briefly explains the featu
 - **Description:** This file contains electoral and parliamentary data for subsequent regression analyses. 
 
 ## 📁 Results
-### This folder contains scripts producing analysis results from the performed annotations. These analyses provide an in-depth understanding of thematic and emotional trends in general policy speeches, including their 'far-rightization'
+### This folder contains scripts producing analysis results from the performed annotations. 
 
 ### Database.R: Creation of the database and Far-Right Ideological Score
 
