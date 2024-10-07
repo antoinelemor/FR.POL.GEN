@@ -145,26 +145,10 @@ Ce readme est organisé et décrit par dossier, et explique brièvement les fonc
 ## 📁 Results
 ### Ce dossier contient des scripts produisant des résultats d'analyse à partir de l'annotation réalisée. Ces analyses fournissent une compréhension approfondie des tendances thématiques et émotionnelles dans les discours de politique générake, notamment leur 'extrême droitisation'
 
-### Database.R : Analyse statistique des textes de discours politique générale
-- **Fonctionnalité :** Ce script R effectue des analyses statistiques avancées, y compris le traitement des données, le calcul de proportions thématiques, des scores d'extrême droite, ainsi que des indices de négativité et de positivité du discours. Il produit également des visualisations et des régressions statistiques pour interpréter les tendances et les relations dans les données.
-- **Bibliothèques utilisées :** `dplyr`, `ggplot2`, `lubridate`, `tidyverse`, `broom`, `forcats`, `RColorBrewer`, `readxl` 
-- **Processus :**
-  - **Chargement des données** : Les discours annotés sont chargés à partir d'un fichier CSV.
-  - **Préparation des données** : Les données sont regroupées par document, date et intervenant, et des calculs sont effectués pour déterminer le nombre total de phrases par discours.
-  - **Analyse thématique** : Les données sont transformées pour calculer la proportion de chaque thématique détectée par rapport au total des phrases, et ce, pour chaque date et intervenant.
-  - **Calcul des scores d'extrême droite** : Les scores sont calculés en fonction de la présence de thématiques spécifiques et de leur intensité.
-  - **Régressions et visualisations** : Des modèles de régression sont construits pour analyser les impacts des différentes variables sur les scores politiques. Des graphiques d'interaction et des tableaux de corrélation sont générés pour visualiser ces relations.
+### Database.R : Création de la base de données avec indice du Score Idéologique d'Extrême Droite
 
 ### Results.R : Visualisation et analyse des résultats des annotations
 - **Fonctionnalité :** Ce script R génère des visualisations et des analyses détaillées des données annotées, y compris des distributions thématiques, des proportions et des évolutions temporelles des thématiques dans les discours politiques.
-- **Bibliothèques utilisées :** `dplyr`, `ggplot2`, `lubridate`, `tidyverse`, `broom`, `forcats`, `RColorBrewer`
-- **Processus :**
-  - **Chargement et préparation des données** : Importation des données annotées et ajustements préliminaires pour assurer le bon format des dates et la consistance des variables.
-  - **Visualisation des distributions thématiques** : Création de graphiques à barres pour montrer la fréquence des différentes thématiques détectées dans les discours.
-  - **Analyse des proportions des thématiques** : Calcul des proportions de chaque thématique par rapport au nombre total de phrases par discours, suivi par la visualisation de ces proportions pour identifier les tendances.
-  - **Évolution des thématiques dans le temps** : Visualisation de l'évolution des proportions des thématiques au fil du temps avec des graphiques linéaires et ponctuels, mettant en évidence les changements dans l'usage des thématiques par les intervenants.
-  - **Exportation des graphiques** : Les visualisations créées sont sauvegardées dans des fichiers PDF pour une utilisation dans des rapports ou des présentations ultérieures.
-
 
 # FR.POL.GEN
 ## A repository (for textual analysis) of all 'general policy speeches' of the Fifth French Republic
@@ -313,26 +297,9 @@ This README is organized and described by folder, and briefly explains the featu
 ## 📁 Results
 ### This folder contains scripts producing analysis results from the performed annotations. These analyses provide an in-depth understanding of thematic and emotional trends in general policy speeches, including their 'far-rightization'
 
-### Database.R: Statistical analysis of general policy speech texts
-- **Functionality:** This R script performs advanced statistical analyses, including data processing, calculation of thematic proportions, far-right scores, as well as indices of speech negativity and positivity. It also produces visualizations and statistical regressions to interpret trends and relationships in the data.
-- **Libraries used:** `dplyr`, `ggplot2`, `lubridate`, `tidyverse`, `broom`, `forcats`, `RColorBrewer`, `readxl`
-- **Process:**
-  - **Data Loading**: Annotated speeches are loaded from a CSV file.
-  - **Data Preparation**: Data are grouped by document, date, and speaker, and calculations are performed to determine the total number of sentences per speech.
-  - **Thematic Analysis**: Data are transformed to calculate the proportion of each detected theme relative to the total sentences, for each date and speaker.
-  - **Extreme Right Score Calculation**: Scores are calculated based on the presence of specific themes and their intensity.
-  - **Regressions and Visualizations**: Regression models are built to analyze the impacts of different variables on political scores. Interaction graphs and correlation tables are generated to visualize these relationships.
+### Database.R: Creation of the database and Far-Right Ideological Score
 
 ### Results.R: Visualization and analysis of annotation results
-- **Functionality:** This R script generates detailed visualizations and analyses of the annotated data, including thematic distributions, proportions, and temporal evolutions of themes in political speeches.
-- **Libraries used:** `dplyr`, `ggplot2`, `lubridate`, `tidyverse`, `broom`, `forcats`, `RColorBrewer`
-- **Process:**
-  - **Data Loading and Preparation**: Importing annotated data and making preliminary adjustments to ensure the correct format of dates and consistency of variables.
-  - **Visualization of Thematic Distributions**: Creating bar charts to show the frequency of different detected themes in the speeches.
-  - **Analysis of Thematic Proportions**: Calculating the proportions of each theme relative to the total number of sentences per speech, followed by visualizing these proportions to identify trends.
-  - **Evolution of Themes Over Time**: Visualizing the evolution of thematic proportions over time with line and dot graphs, highlighting changes in theme usage by speakers.
-  - **Exporting Graphs**: Created visualizations are saved in PDF files for use in later reports or presentations.
-
 
 ## Détails des performances d'annotation / Annotation Performance Details
 ### Le tableau ci-dessous détaille les performances d'annotation. Il doit être noté que les NA ne doivent pas être inteprétés comme l'absence de vérification provenant de l'annotation manuelle, mais plutôt par l'absence totale de ces catégories dans les données textuelle. 
