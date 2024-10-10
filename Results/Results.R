@@ -2,13 +2,6 @@
 # Code pour la création des figures du SIED et CAIED
 # ---------------------------------------------------------------------------
 
-# Auteur : [Votre Nom]
-# Date : [Date]
-# Description : Ce script traite les données de discours pour calculer et visualiser 
-# le SIED (Score Idéologique d'Extrême Droite) et les CAIED (Catégories 
-# d'Appartenance Idéologique à l'Extrême Droite) dans le temps, par Premier Ministre,
-# et par orientation politique, y compris les intervalles de confiance.
-
 # ---------------------------------------------------------------------------
 #### Chargement de l'environnement ####
 # ---------------------------------------------------------------------------
