@@ -1,6 +1,7 @@
 # ---------------------------------------------------------------------------
 # Code pour la création des figures du SIED et CAIED
 # ---------------------------------------------------------------------------
+  
 
 # ---------------------------------------------------------------------------
 #### Chargement de l'environnement ####
@@ -11,7 +12,7 @@ rm(list = ls())
 
 # Chemins
 import_data_path <- "/Database"
-export_path <- "/Results/Final_results"
+export_path <- "/Final_results"
 
 # Librairies nécessaires
 library(dplyr)
@@ -256,7 +257,7 @@ ggsave(
 # Calculer les intervalles de confiance
 data_with_ci <- calculate_confidence_intervals(score_data_date, window_size = 10)
 
-# Graphique avec intervalles de confiance
+# Graphique avec intervalles de confiance et bornes aux extrémités
 ggplot(data_with_ci, aes(x = date, y = far_right_score, group = intervenant)) +
   geom_point(alpha = 0.3) +
   geom_text(
@@ -268,7 +269,7 @@ ggplot(data_with_ci, aes(x = date, y = far_right_score, group = intervenant)) +
   geom_smooth(method = "loess", se = TRUE, color = "black", aes(group = 1)) +
   geom_errorbar(
     aes(ymin = lower_ci, ymax = upper_ci),
-    width = 0.2,
+    width = 350,  
     color = "#808080"
   ) +
   scale_x_date(date_breaks = "10 years", date_labels = "%Y") +

@@ -11,7 +11,7 @@ rm(list = ls())
 
 # Chemins d'importation et d'exportation
 import_data_path <- "/Database"
-export_path <- "/Results/Final_results"
+export_path <- "/Final_results"
 
 # Chargement des packages nécessaires
 library(dplyr)
