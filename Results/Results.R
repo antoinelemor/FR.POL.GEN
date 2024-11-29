@@ -12,7 +12,7 @@ rm(list = ls())
 
 # Chemins
 import_data_path <- "/Database"
-export_path <- "/Final_results"
+export_path <- "/Results/Final_results"
 
 # Librairies nécessaires
 library(dplyr)
