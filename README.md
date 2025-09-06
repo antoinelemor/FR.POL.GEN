@@ -12,10 +12,10 @@ Nous avons produit une annotation manuelle sur un échantillon représentatif po
 
 |                              | N   | Précision | Rappel | F1   |
 |------------------------------|-----|-----------|--------|------|
-| Détection des thématiques    | 467 | 1         | 0.93   | 0.96 |
-| Détection de droite extrême des thématiques | 127 | 1         | 0.73   | 0.84 |
+| Détection des thématiques    | 467 | 0.97         | 0.90   | 0.93 |
+| Détection de droite extrême des thématiques | 127 | 0.77         | 0.64   | 0.68 |
 | Détection du ton (positif, négatif, neutre) | 400 | 0.94      | 0.94   | 0.93 |
-| Ensemble                     | 994 | 1         | 0.89   | 0.94 |
+| Ensemble                     | 994 | 0.87         | 0.77   | 0.80 |
 
 Ce readme est organisé et décrit par dossier, et explique brièvement les fonctionnalités de chaque script par dossier ainsi que le contenu de chaque dossier. 
 
@@ -163,10 +163,10 @@ We have conducted manual annotation on a representative sample to verify the per
 
 |                              | N   | Precision | Recall | F1   |
 |------------------------------|-----|-----------|--------|------|
-| Thematic Detection           | 467 | 1         | 0.93   | 0.96 |
-| Far-Right Thematic Detection | 127 | 1         | 0.73   | 0.84 |
+| Thematic Detection           | 467 | 0.97         | 0.90   | 0.93 |
+| Far-Right Thematic Detection | 127 | 0.77         | 0.64   | 0.68 |
 | Tone Detection (positive, negative, neutral) | 400 | 0.94      | 0.94   | 0.93 |
-| Overall                      | 994 | 1         | 0.89   | 0.94 |
+| Overall                      | 994 | 0.87         | 0.77   | 0.80 |
 
 
 This README is organized and described by folder, and briefly explains the features of each script by folder as well as the content of each folder.
